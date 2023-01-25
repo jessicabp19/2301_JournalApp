@@ -1,40 +1,37 @@
+import { useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
 import { Google } from "@mui/icons-material"
 
 import { AuthLayout } from '../layout/AuthLayout';
-import { checkingAuthentication, startGoogleSingIn } from '../../store/auth';
+import { startGoogleSingIn, startLoginWithEmailPassword } from '../../store/auth';
 import { useForm } from '../../hooks';
-import { useMemo } from 'react';
-
-/**
- * MUI works with "mobile first"
- */
 
 export const LoginPage = () => {
-  
-  const { status } = useSelector(state => state.auth);
 
-  const { email, password, onInputChange } = useForm({
+  const dispatch = useDispatch();
+  
+  const { status, errorMessage } = useSelector(state => state.auth);
+  const isAuthenticating = useMemo( () => status === "checking", [status]);
+
+  const { email, password, onInputChange, formState } = useForm({
     email: 'jessica@google.com',
     password: '12345'
   });
 
-  const isAuthenticating = useMemo( () => status === "checking", [status]);
-
-  const dispatch = useDispatch();
-
   const onSubmit = (event) => {
-    event.preventDefault();
 
-    console.log({ email, password })
-    dispatch( checkingAuthentication() );
+    event.preventDefault();
+    dispatch( startLoginWithEmailPassword(formState) );
+
   }
 
-  const onGoogleSingIn = () => {
-    console.log('onGoogleSingIn');
+  const onGoogleSingIn = (event) => {
+
+    event.preventDefault();
     dispatch( startGoogleSingIn() );
+
   }
 
   return (
@@ -64,6 +61,19 @@ export const LoginPage = () => {
               onChange={ onInputChange }
             />
           </Grid>
+
+          <Grid 
+            container
+            display={ !!errorMessage ? '' : 'none' }
+            sx={{ mt: 2 }}
+          >
+            <Grid 
+              item 
+              xs={12}
+            >
+              <Alert severity='error'>{ errorMessage }</Alert>
+            </Grid>
+          </Grid> 
 
           <Grid container spacing={2} sx={{ mb: 2, mt: 1.5 }}>
             <Grid item xs={12} sm={6}>

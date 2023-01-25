@@ -1,10 +1,11 @@
+import { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux'
 import { Link as RouterLink } from 'react-router-dom';
-import { Button, Grid, Link, TextField, Typography } from "@mui/material"
+import { Alert, Button, Grid, Link, TextField, Typography } from "@mui/material"
+
 import { AuthLayout } from '../layout/AuthLayout';
 import { useForm } from '../../hooks';
-import { useState } from 'react';
-
-//MUI works with "mobile first"
+import { startCreatingUserWithEmailPassword } from '../../store/auth';
 
 const formData = {
   email: '',//'jessica@google.com',
@@ -13,7 +14,6 @@ const formData = {
 }
 
 const formValidations = {
-
   email: [ (value) => value.includes('@'), 'The email must have an @'],
   password: [ (value) =>  value.length >=  6, 'The password must have more than 6 characters.'],
   displayName: [ (value) => value.length >= 1, 'The name is required.']
@@ -21,7 +21,12 @@ const formValidations = {
 
 export const RegisterPage = () => {
 
+  const dispatch = useDispatch();
   const [formSubmited, setFormSubmited] = useState(false)
+
+  const { status, errorMessage } = useSelector( state => state.auth )
+
+  const isAuthenticating = useMemo(() => status === 'checking', [status])
 
   const { 
     formState, displayName, email, password, onInputChange, 
@@ -31,12 +36,14 @@ export const RegisterPage = () => {
   const onSubmit = (event) => {
     event.preventDefault();
     setFormSubmited( true );
-    console.log(formState)
+
+    if ( !isFormValid ) return;
+
+    dispatch( startCreatingUserWithEmailPassword(formState) );
   }
 
   return (
     <AuthLayout title="Register">
-      {/* <h1>FormValid { isFormValid ? 'Valid':'Nou'}</h1> */}
       <form onSubmit={ onSubmit }>
         <Grid container>
 
@@ -83,8 +90,17 @@ export const RegisterPage = () => {
           </Grid>
 
           <Grid container spacing={2} sx={{ mb: 2, mt: 1.5 }}>
+
+            <Grid item 
+              xs={12}
+              display={ !!errorMessage ? '' : 'none'}>
+              <Alert severity='error'>{ errorMessage }</Alert>
+            </Grid>
+
             <Grid item xs={12}>
-              <Button type='submit' variant="contained" fullWidth>
+              <Button 
+                disabled={ isAuthenticating }
+                type='submit' variant="contained" fullWidth>
                 Create account
               </Button>
             </Grid>

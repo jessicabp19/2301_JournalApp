@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { FirstPage } from '@mui/icons-material';
-//Herramienta: React Hook Form
+//Herramienta: React Hook Form or formik
 
 export const useForm = ( initialForm = {}, formValidations = {} ) => {
 
@@ -41,11 +41,11 @@ export const useForm = ( initialForm = {}, formValidations = {} ) => {
             const [ fn, errorMessage ] = formValidations[formField];
 
             //displayNameValid, emailValid, passwordValid \o/
+            //('jess@google.com') => 'jess@google.com'.includes('@') ? 
             formCheckedValues[`${ formField }Valid`] = fn(formState[formField]) ? null : errorMessage;
         }
 
         setFormValidation( formCheckedValues );
-        console.log(formCheckedValues)
 
     }
 
