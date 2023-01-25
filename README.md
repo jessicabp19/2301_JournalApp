@@ -8,10 +8,10 @@
 
 <!-- # UI
 
-!["Journal_Login"](Images/Journal_Login.png)
+!["Journal_Login"](images/Journal_Login.png)
 
-!["Journal_RegisterValidations"](Images/Journal_RegisterValidations.png)
+!["Journal_RegisterValidations"](images/Journal_RegisterValidations.png)
 
-!["Journal_NothingSelected"](Images/Journal_NothingSelected.png)
+!["Journal_NothingSelected"](images/Journal_NothingSelected.png)
 
-!["Journal_ViewNote"](Images/Journal_ViewNote.png) -->
+!["Journal_ViewNote"](images/Journal_ViewNote.png)
