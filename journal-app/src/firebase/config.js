@@ -19,3 +19,5 @@ const firebaseConfig = {
 export const FirebaseApp = initializeApp(firebaseConfig);
 export const FirebaseAuth = getAuth(FirebaseApp);
 export const FirebaseDB = getFirestore( FirebaseApp );
+
+//Other options can be: Auth0 and Kykloud (single sing on)
