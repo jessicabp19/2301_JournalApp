@@ -8,8 +8,7 @@ import { useDispatch, useSelector } from "react-redux"
 
 export const JournalPage = () => {
 
-  const { isSaving, active } = useSelector(state => state.journal)
-  console.log(isSaving);
+  const { isSaving, active } = useSelector(state => state.journal);
 
   const dispatch = useDispatch();
 
@@ -23,8 +22,8 @@ export const JournalPage = () => {
     
       {
         ( !!active ) //!! bc it's an object that can be null
-        ? <NothingSelectedView />
-        : <NoteView />
+        ? <NoteView />
+        : <NothingSelectedView />
       }
 
       <IconButton

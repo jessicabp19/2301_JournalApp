@@ -7,7 +7,7 @@
 
 
 <!-- # UI
-
+Se procura que el hosting de las imagenes sea diferente al hosting donde tenemos corriendo la app
 !["Journal_Login"](images/Journal_Login.png)
 
 !["Journal_RegisterValidations"](images/Journal_RegisterValidations.png)

@@ -1,8 +1,7 @@
-import { async } from "@firebase/util"
 import { collection, doc, setDoc } from "firebase/firestore/lite";
 import { FirebaseDB } from "../../firebase/config";
-import { loadNotes } from "../../helpers";
-import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes } from "./journalSlice";
+import { fileUpload, loadNotes } from "../../helpers";
+import { addNewEmptyNote, savingNewNote, setActiveNote, setNotes, setPhotosToActiveNote, setSaving, updateNote } from "./journalSlice";
 
 export const startNewNote = () => {
     return async(dispatch, getState) => {
@@ -38,5 +37,47 @@ export const startLoadingNotes = () => {
 
         const notes = await loadNotes(uid);
         dispatch( setNotes(notes) );
+    }
+}
+
+export const startSavingNote = () => {
+    return async( dispatch, getState ) => {
+
+        dispatch( setSaving() )
+
+        const { uid } = getState().auth;
+        const { active:note } = getState().journal;
+
+        const noteToFireStore = { ...note };
+        delete noteToFireStore.id;
+        
+        const docRef = doc( FirebaseDB, `/${uid}/journal/notes/${note.id}`)
+
+        await setDoc( docRef, noteToFireStore, { merge: true });
+
+        dispatch( updateNote() )
+
+    }
+}
+
+export const startUploadingFiles = ( files = [] ) => {
+    return async( dispatch ) => {
+
+        dispatch( setSaving() );
+        
+        const fileUploadPromises = [];
+        
+        for (const file of files) {
+            //Aquí no estoy disparando la peticion, solo creando el arreglo de promesas
+            fileUploadPromises.push( fileUpload(file) ) 
+        }
+
+        const photosUrls = await Promise.all(fileUploadPromises);
+
+        dispatch( setPhotosToActiveNote(photosUrls) )
+
+        // files.forEach( async(file) => {
+        //     await fileUpload(file);
+        // }) //El proceso sería en secuencia y no simultaneo
     }
 }
