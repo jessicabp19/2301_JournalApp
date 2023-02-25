@@ -1,13 +1,17 @@
 # 2301_JournalApp
 
-### Details:
+## Details
+- Redux
 - Firebase
 - Form Validations
+- Theme and Layouts
 - Sing in with google
+- Cloudinary to manage images
 
+## Deployment ;)
+- https://journal-app-jb.netlify.app/auth/login
 
-<!-- # UI
-Se procura que el hosting de las imagenes sea diferente al hosting donde tenemos corriendo la app
+## UI
 !["Journal_Login"](images/Journal_Login.png)
 
 !["Journal_RegisterValidations"](images/Journal_RegisterValidations.png)
