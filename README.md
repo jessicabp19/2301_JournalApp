@@ -9,7 +9,7 @@
 - Cloudinary to manage images
 
 ## Deployment ;)
-- https://journal-app-jb.netlify.app/auth/login
+- https://journal-app-jb.netlify.app
 
 ## UI
 !["Journal_Login"](images/Journal_Login.png)
