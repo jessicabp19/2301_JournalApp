@@ -2,14 +2,14 @@ import { useMemo, useRef } from "react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 
-import { SaveOutlined, UploadOutlined } from "@mui/icons-material"
+import { DeleteOutline, SaveOutlined, UploadOutlined } from "@mui/icons-material"
 import { Button, Grid, IconButton, TextField, Typography } from "@mui/material"
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.css';
 
 import { ImageGallery } from "../components"
 import { useForm } from "../../hooks/useForm";
-import { setActiveNote, startSavingNote, startUploadingFiles } from "../../store/journal";
+import { setActiveNote, startSavingNote, startUploadingFiles, startDeletingNote } from "../../store/journal";
 
 export const NoteView = () => {
 
@@ -48,6 +48,10 @@ export const NoteView = () => {
         dispatch( startUploadingFiles(target.files));
     }
 
+    const onDelete = () => {
+        dispatch( startDeletingNote() )
+    }
+
   return (
     <Grid 
         container 
@@ -67,13 +71,14 @@ export const NoteView = () => {
                 onChange={ onFileInputChange }
                 style={{ display: 'none' }}
             />
-            <IconButton
+            <Button
                 color="primary"
                 disabled={ isSaving }
                 onClick={ () => fileInputRef.current.click() }
             >
-                <UploadOutlined />
-            </IconButton>
+                <UploadOutlined sx={{ fontSize: 30, mr: 1 }}/>
+                Adjuntar Imagenes
+            </Button>
             <Button 
                 disabled={ isSaving }
                 onClick={ onSaveNote }
@@ -111,7 +116,18 @@ export const NoteView = () => {
             />
         </Grid>
 
-        <ImageGallery />
+        <Grid container justifyContent="end">
+            <Button
+                onClick={ onDelete }
+                sx={{ mt: 2 }}
+                color="error"
+            >
+                <DeleteOutline />
+                Borrar
+            </Button>
+        </Grid>
+
+        <ImageGallery images={ note.imageUrls } />
 
     </Grid>
   )
